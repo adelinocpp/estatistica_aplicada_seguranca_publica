@@ -11,7 +11,7 @@
 # --- Comandos para limpar o terminal e as variáveis da memória
 cat("\014")
 rm(list = setdiff(ls(), lsf.str()))
-dev.off()
+# dev.off()
 
 # --- Chamada das bibliotecas
 # library(moments)
@@ -43,6 +43,9 @@ summary(df_SegPubBH2020)
 df_SegPubBH2020Ext <- df_SegPubMG[(df_SegPubMG$Município == "BELO HORIZONTE") 
                                & (df_SegPubMG$Ano==2020) 
                                & (df_SegPubMG$Natureza == "Extorsão Consumado"),]
+#     Exemplo 4: Município de BELO HORIZONTE, natureza Extorsão
+df_SegPubBHExt <- df_SegPubMG[(df_SegPubMG$Município == "BELO HORIZONTE") 
+                                  & (df_SegPubMG$Natureza == "Extorsão Consumado"),]
 # --- Visualizar dados
 #     Forma de barras
 barplot(df_SegPubBH2020Ext$Registros,names.arg=df_SegPubBH2020Ext$Mês,)
@@ -58,6 +61,16 @@ p <- p + geom_line(data=df_SegPubBH2020Ext, aes(x=as.numeric(Mês), y=Registros)
 png(file = "./Barras_linha.png",width = 864, height = 486, units = "px", bg = "transparent")
 p
 dev.off()
+#     Histograma
+hbreak = seq(min(df_SegPubBHExt$Registros)-1, max(df_SegPubBHExt$Registros)+1, by=2)
+hist(df_SegPubBHExt$Registros, breaks=hbreak,
+              main = "Histograma dos dados", 
+              xlab = "N° de ocorrências", ylab="Frequência")  
+#     No GG plot
+h1 <- ggplot(df_SegPubBHExt, aes(Registros)) + 
+      geom_histogram(color = "white", fill = "lightblue", bins=17) + 
+      xlab("Dados") + ylab("Frequencia")
+h1
 
 # --- Extracao de estatisticas
 median(df_SegPubBH2020Ext$Registros)
